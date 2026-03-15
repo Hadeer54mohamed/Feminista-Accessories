@@ -45,11 +45,13 @@
     --cream: 30 27% 96%;
     --warm-beige: 36 55% 80%;
 
+    --gradient-burgundy: linear-gradient(135deg, hsl(0 50% 33%), hsl(0 45% 40%));
+    --gradient-burgundy-hover: linear-gradient(135deg, hsl(0 55% 28%), hsl(0 50% 36%));
     --gradient-gold: linear-gradient(135deg, hsl(38 45% 60%), hsl(36 55% 80%));
     --gradient-gold-hover: linear-gradient(135deg, hsl(38 50% 55%), hsl(38 60% 70%));
-    --shadow-luxury: 0 8px 32px -8px hsl(38 45% 60% / 0.25);
+    --shadow-luxury: 0 8px 32px -8px hsl(0 50% 33% / 0.3);
     --shadow-card: 0 4px 20px -4px hsl(15 35% 20% / 0.08);
-    --shadow-card-hover: 0 12px 40px -8px hsl(38 45% 60% / 0.2);
+    --shadow-card-hover: 0 12px 40px -8px hsl(0 50% 33% / 0.15);
 
     --font-display: 'Playfair Display', Georgia, serif;
     --font-body: system-ui, -apple-system, sans-serif;
@@ -97,6 +99,14 @@
 
   .gold-gradient-bg-hover {
     background: var(--gradient-gold-hover);
+  }
+
+  .burgundy-gradient-bg {
+    background: var(--gradient-burgundy);
+  }
+
+  .burgundy-gradient-bg-hover {
+    background: var(--gradient-burgundy-hover);
   }
 
   .luxury-card {

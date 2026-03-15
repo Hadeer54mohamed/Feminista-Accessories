@@ -37,14 +37,14 @@ const BestSellers = () => {
             <button
               onClick={prev}
               disabled={offset === 0}
-              className="h-12 w-12 rounded-full border-2 border-gold flex items-center justify-center text-dark-brown hover:bg-gold hover:text-accent-foreground transition-all duration-300 disabled:opacity-30"
+              className="h-12 w-12 rounded-full border-2 border-burgundy flex items-center justify-center text-dark-brown hover:bg-burgundy hover:text-cream transition-all duration-300 disabled:opacity-30"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
             <button
               onClick={next}
               disabled={offset >= maxOffset}
-              className="h-12 w-12 rounded-full border-2 border-gold flex items-center justify-center text-dark-brown hover:bg-gold hover:text-accent-foreground transition-all duration-300 disabled:opacity-30"
+              className="h-12 w-12 rounded-full border-2 border-burgundy flex items-center justify-center text-dark-brown hover:bg-burgundy hover:text-cream transition-all duration-300 disabled:opacity-30"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
@@ -71,7 +71,7 @@ const BestSellers = () => {
                 <div className="p-5">
                   <h3 className="font-display text-lg font-semibold text-dark-brown mb-1">{product.name}</h3>
                   <p className="text-accent font-semibold text-lg mb-4">{product.price} EGP</p>
-                  <button className="w-full gold-gradient-bg hover:gold-gradient-bg-hover text-accent-foreground py-3 rounded-full text-sm tracking-[0.1em] uppercase font-semibold transition-all duration-300 flex items-center justify-center gap-2">
+                  <button className="w-full burgundy-gradient-bg hover:burgundy-gradient-bg-hover text-cream py-3 rounded-full text-sm tracking-[0.1em] uppercase font-semibold transition-all duration-300 flex items-center justify-center gap-2">
                     <ShoppingBag className="h-4 w-4" />
                     Add to Cart
                   </button>

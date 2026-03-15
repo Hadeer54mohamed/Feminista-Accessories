@@ -43,7 +43,7 @@ const Navbar = () => {
         <div className="flex items-center gap-4">
           <button className="relative text-dark-brown hover:text-accent transition-colors">
             <ShoppingBag className="h-5 w-5" />
-            <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full gold-gradient-bg text-[10px] flex items-center justify-center text-accent-foreground font-semibold">
+            <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-burgundy text-[10px] flex items-center justify-center text-cream font-semibold">
               0
             </span>
           </button>
