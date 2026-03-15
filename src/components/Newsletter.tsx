@@ -21,7 +21,7 @@ const Newsletter = () => {
               placeholder="Enter your email"
               className="flex-1 bg-card border border-border rounded-full px-6 py-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent transition-all"
             />
-            <button className="gold-gradient-bg hover:gold-gradient-bg-hover text-accent-foreground px-8 py-4 rounded-full text-sm tracking-[0.1em] uppercase font-semibold transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap"
+            <button className="burgundy-gradient-bg hover:burgundy-gradient-bg-hover text-cream px-8 py-4 rounded-full text-sm tracking-[0.1em] uppercase font-semibold transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap"
               style={{ boxShadow: "var(--shadow-luxury)" }}
             >
               <Send className="h-4 w-4" />

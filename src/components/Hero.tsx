@@ -46,14 +46,14 @@ const Hero = () => {
         <div className="animate-fade-up animate-fade-up-delay-3 flex flex-col sm:flex-row gap-4">
           <a
             href="#collection"
-            className="gold-gradient-bg hover:gold-gradient-bg-hover text-accent-foreground px-8 py-4 rounded-full text-sm tracking-[0.15em] uppercase font-semibold transition-all duration-300 text-center"
+            className="burgundy-gradient-bg hover:burgundy-gradient-bg-hover text-cream px-8 py-4 rounded-full text-sm tracking-[0.15em] uppercase font-semibold transition-all duration-300 text-center"
             style={{ boxShadow: "var(--shadow-luxury)" }}
           >
             Shop Collection
           </a>
           <a
             href="#best-sellers"
-            className="border-2 border-gold text-dark-brown px-8 py-4 rounded-full text-sm tracking-[0.15em] uppercase font-semibold hover:bg-gold hover:text-accent-foreground transition-all duration-300 text-center"
+            className="border-2 border-burgundy text-dark-brown px-8 py-4 rounded-full text-sm tracking-[0.15em] uppercase font-semibold hover:bg-burgundy hover:text-cream transition-all duration-300 text-center"
           >
             View New Arrivals
           </a>
