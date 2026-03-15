@@ -101,6 +101,14 @@
     background: var(--gradient-gold-hover);
   }
 
+  .burgundy-gradient-bg {
+    background: var(--gradient-burgundy);
+  }
+
+  .burgundy-gradient-bg-hover {
+    background: var(--gradient-burgundy-hover);
+  }
+
   .luxury-card {
     @apply rounded-2xl overflow-hidden transition-all duration-500;
     box-shadow: var(--shadow-card);
