@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import logo from "@/assets/logo.png";
 import { ShoppingBag, Menu, X } from "lucide-react";
+import { useCart } from "@/contexts/CartContext";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { totalItems, setIsOpen } = useCart();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -41,11 +43,16 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          <button className="relative text-dark-brown hover:text-accent transition-colors">
+          <button
+            onClick={() => setIsOpen(true)}
+            className="relative text-dark-brown hover:text-accent transition-colors"
+          >
             <ShoppingBag className="h-5 w-5" />
-            <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-burgundy text-[10px] flex items-center justify-center text-cream font-semibold">
-              0
-            </span>
+            {totalItems > 0 && (
+              <span className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-burgundy text-[10px] flex items-center justify-center text-cream font-semibold animate-bounce-once">
+                {totalItems}
+              </span>
+            )}
           </button>
           <button
             className="md:hidden text-dark-brown"
