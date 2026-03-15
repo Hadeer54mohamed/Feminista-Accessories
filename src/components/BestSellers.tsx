@@ -37,14 +37,14 @@ const BestSellers = () => {
             <button
               onClick={prev}
               disabled={offset === 0}
-              className="h-12 w-12 rounded-full border-2 border-gold flex items-center justify-center text-dark-brown hover:bg-gold hover:text-accent-foreground transition-all duration-300 disabled:opacity-30"
+              className="h-12 w-12 rounded-full border-2 border-burgundy flex items-center justify-center text-dark-brown hover:bg-burgundy hover:text-cream transition-all duration-300 disabled:opacity-30"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
             <button
               onClick={next}
               disabled={offset >= maxOffset}
-              className="h-12 w-12 rounded-full border-2 border-gold flex items-center justify-center text-dark-brown hover:bg-gold hover:text-accent-foreground transition-all duration-300 disabled:opacity-30"
+              className="h-12 w-12 rounded-full border-2 border-burgundy flex items-center justify-center text-dark-brown hover:bg-burgundy hover:text-cream transition-all duration-300 disabled:opacity-30"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
