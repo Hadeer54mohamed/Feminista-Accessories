@@ -38,7 +38,7 @@ const ProductCard = ({ product }: { product: typeof products[0] }) => {
           }`}
         />
         {product.tag && (
-          <span className="absolute top-4 left-4 gold-gradient-bg text-accent-foreground text-xs tracking-[0.1em] uppercase px-3 py-1 rounded-full font-semibold">
+          <span className="absolute top-4 left-4 bg-burgundy text-cream text-xs tracking-[0.1em] uppercase px-3 py-1 rounded-full font-semibold">
             {product.tag}
           </span>
         )}
