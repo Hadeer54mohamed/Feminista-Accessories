@@ -1,135 +1,202 @@
+import { motion, AnimatePresence } from "framer-motion";
+import { X, Plus, Minus, ShoppingBag, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
-import { X, Plus, Minus, Trash2, ShoppingBag } from "lucide-react";
-import { useEffect } from "react";
 
-const CartDrawer = () => {
-  const { items, isOpen, setIsOpen, removeItem, updateQuantity, totalItems, subtotal, clearCart } = useCart();
+export function CartPanel() {
+  const {
+    items,
+    isOpen,
+    setIsOpen,
+    removeItem,
+    updateQuantity,
+    subtotal,
+    totalItems,
+  } = useCart();
 
-  // Lock body scroll when open
-  useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
-  }, [isOpen]);
+  const closeCart = () => setIsOpen(false);
+  
+  const handleCheckout = () => {
+    const phoneNumber = "201229856471";
+    
+    const itemsDetails = items
+      .map(
+        (item) => 
+          `• ${item.name} \n  [Code: ${item.sku || 'N/A'}] \n  (Qty: ${item.quantity}) - ${item.price * item.quantity} EGP`
+      )
+      .join("\n\n");
+  
+    const message = `أهلاً فيمينيستا! حابة أعمل أوردر جديد:✨\n\n${itemsDetails}\n\n*إجمالي المبلغ:* ${subtotal.toFixed(2)} EGP\n\nهل المنتجات دي متاحة؟ ❤️`;
+  
+    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, "_blank");
+  };
 
   return (
-    <>
-      {/* Backdrop */}
-      <div
-        className={`fixed inset-0 bg-dark-brown/40 backdrop-blur-sm z-[60] transition-opacity duration-300 ${
-          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
-        onClick={() => setIsOpen(false)}
-      />
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeCart}
+            className="fixed inset-0 bg-dark-brown/50 z-[110] backdrop-blur-sm"
+          />
 
-      {/* Drawer */}
-      <div
-        className={`fixed top-0 right-0 h-full w-full max-w-md bg-background z-[70] shadow-2xl transition-transform duration-500 ease-out flex flex-col ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-border">
-          <div className="flex items-center gap-3">
-            <ShoppingBag className="h-5 w-5 text-burgundy" />
-            <h2 className="font-display text-xl font-semibold text-dark-brown">
-              Your Cart ({totalItems})
-            </h2>
-          </div>
-          <button
-            onClick={() => setIsOpen(false)}
-            className="h-10 w-10 rounded-full flex items-center justify-center hover:bg-muted transition-colors"
+          {/* Panel */}
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed top-0 right-0 h-full w-full max-w-md bg-off-white z-[110] shadow-2xl flex flex-col"
           >
-            <X className="h-5 w-5 text-dark-brown" />
-          </button>
-        </div>
-
-        {/* Items */}
-        <div className="flex-1 overflow-y-auto px-6 py-4">
-          {items.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-center">
-              <ShoppingBag className="h-16 w-16 text-muted-foreground/30 mb-4" />
-              <p className="font-display text-lg text-dark-brown mb-1">Your cart is empty</p>
-              <p className="text-muted-foreground text-sm">Add some beautiful pieces to get started.</p>
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-beige">
+              <div className="flex items-center gap-3">
+                <ShoppingBag className="size-5 text-dark-brown" />
+                <h2 className="font-serif text-xl text-dark-brown">
+                  Your Cart
+                </h2>
+                <span className="bg-burgundy text-off-white text-xs font-medium px-2 py-0.5 rounded-full">
+                  {totalItems}
+                </span>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={closeCart}
+                className="text-dark-brown hover:bg-beige/50 rounded-full"
+                aria-label="Close cart"
+              >
+                <X className="size-5" />
+              </Button>
             </div>
-          ) : (
-            <div className="space-y-4">
-              {items.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex gap-4 p-3 rounded-xl bg-card border border-border animate-fade-in"
-                >
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="h-20 w-20 rounded-lg object-cover flex-shrink-0"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-display text-sm font-semibold text-dark-brown truncate">
-                      {item.name}
-                    </h3>
-                    <p className="text-burgundy font-semibold text-sm mt-0.5">
-                      {item.price} EGP
-                    </p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <button
-                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        className="h-7 w-7 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
-                      >
-                        <Minus className="h-3 w-3" />
-                      </button>
-                      <span className="text-sm font-semibold text-dark-brown w-6 text-center">
-                        {item.quantity}
-                      </span>
-                      <button
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        className="h-7 w-7 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
-                      >
-                        <Plus className="h-3 w-3" />
-                      </button>
-                    </div>
+
+            {/* Cart Items */}
+            <div className="flex-1 overflow-y-auto p-6">
+              {items.length === 0 ? (
+                <div className="flex flex-col items-center justify-center h-full text-center">
+                  <div className="bg-beige/50 rounded-full p-6 mb-4">
+                    <ShoppingBag className="size-12 text-dark-brown/30" />
                   </div>
-                  <div className="flex flex-col items-end justify-between">
-                    <button
-                      onClick={() => removeItem(item.id)}
-                      className="text-muted-foreground hover:text-burgundy transition-colors"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                    <p className="text-sm font-semibold text-dark-brown">
-                      {item.price * item.quantity} EGP
-                    </p>
-                  </div>
+                  <h3 className="font-serif text-lg text-dark-brown mb-2">
+                    Your cart is empty
+                  </h3>
+                  <p className="text-dark-brown/60 text-sm mb-6">
+                    Add some beautiful pieces to get started
+                  </p>
+                  <Button
+                    onClick={closeCart}
+                    className="bg-dark-brown hover:bg-dark-brown/90 text-off-white rounded-full px-8"
+                  >
+                    Continue Shopping
+                  </Button>
                 </div>
-              ))}
+              ) : (
+                <div className="flex flex-col gap-6">
+                  <AnimatePresence mode="popLayout">
+                    {items.map((item) => (
+                      <motion.div
+                        key={item.id}
+                        layout
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, x: -100 }}
+                        className="flex gap-4 bg-card rounded-xl p-4 shadow-sm"
+                      >
+                        <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-serif text-dark-brown truncate">
+                            {item.name}
+                          </h4>
+                          <div className="flex items-center gap-2 mt-1">
+                            <span className="text-dark-brown font-semibold">
+                              {item.price} EGP
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between mt-3">
+                            <div className="flex items-center gap-1 bg-beige/50 rounded-full">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() =>
+                                  updateQuantity(item.id, item.quantity - 1)
+                                }
+                                className="h-8 w-8 rounded-full hover:bg-beige text-dark-brown"
+                                aria-label="Decrease quantity"
+                              >
+                                <Minus className="size-3" />
+                              </Button>
+                              <span className="w-8 text-center text-dark-brown font-medium">
+                                {item.quantity}
+                              </span>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() =>
+                                  updateQuantity(item.id, item.quantity + 1)
+                                }
+                                className="h-8 w-8 rounded-full hover:bg-beige text-dark-brown"
+                                aria-label="Increase quantity"
+                              >
+                                <Plus className="size-3" />
+                              </Button>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => removeItem(item.id)}
+                              className="h-8 w-8 text-burgundy hover:bg-burgundy/10 rounded-full"
+                              aria-label="Remove item"
+                            >
+                              <Trash2 className="size-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </div>
+              )}
             </div>
-          )}
-        </div>
 
-        {/* Footer */}
-        {items.length > 0 && (
-          <div className="border-t border-border px-6 py-5 space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-muted-foreground text-sm">Subtotal</span>
-              <span className="font-display text-xl font-semibold text-dark-brown">
-                {subtotal} EGP
-              </span>
-            </div>
-            <button className="w-full burgundy-gradient-bg hover:burgundy-gradient-bg-hover text-cream py-4 rounded-full text-sm tracking-[0.15em] uppercase font-semibold transition-all duration-300"
-              style={{ boxShadow: "var(--shadow-luxury)" }}
-            >
-              Proceed to Checkout
-            </button>
-            <button
-              onClick={clearCart}
-              className="w-full text-muted-foreground text-xs tracking-[0.1em] uppercase hover:text-burgundy transition-colors"
-            >
-              Clear Cart
-            </button>
-          </div>
-        )}
-      </div>
-    </>
+            {/* Footer */}
+            {items.length > 0 && (
+              <div className="border-t border-beige p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-dark-brown/70">Subtotal</span>
+                  <span className="font-serif text-xl text-dark-brown">
+                    {subtotal.toFixed(2)} EGP
+                  </span>
+                </div>
+                <p className="text-dark-brown/50 text-sm mb-4">
+                  Free delivery for club members ✨
+                </p>
+                
+                <Button onClick={handleCheckout} 
+                className="w-full bg-burgundy hover:bg-burgundy/90 text-off-white py-6 text-base font-medium rounded-full transition-all duration-300 hover:shadow-lg">
+                  Order via WhatsApp
+                </Button>
+                <Button
+                  variant="ghost"
+                  onClick={closeCart}
+                  className="w-full mt-3 text-dark-brown hover:bg-beige/50 py-5 rounded-full"
+                >
+                  Continue Shopping
+                </Button>
+              </div>
+            )}
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
   );
-};
-
-export default CartDrawer;
+}

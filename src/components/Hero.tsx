@@ -10,8 +10,8 @@ const Hero = () => {
           alt="Luxury gold jewelry collection"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/60 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/30" />
       </div>
 
       {/* Floating particles */}
@@ -30,16 +30,16 @@ const Hero = () => {
       ))}
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 text-left max-w-3xl ml-auto mr-auto md:ml-[8%]">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 text-left max-w-3xl ml-auto mr-auto md:ml-[8%]">
         <p className="animate-fade-up text-sm tracking-[0.3em] uppercase text-accent mb-6 font-medium">
           Feminista Accessories
         </p>
-        <h1 className="animate-fade-up animate-fade-up-delay-1 luxury-heading text-5xl md:text-6xl lg:text-7xl font-bold text-dark-brown leading-[1.1] mb-6">
+        <h1 className="animate-fade-up animate-fade-up-delay-1 luxury-heading text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-6 drop-shadow-lg">
           Timeless Elegance
           <br />
-          <span className="gold-gradient-text">for Every Woman</span>
+          <span className="gold-gradient-text drop-shadow-md">for Every Woman</span>
         </h1>
-        <p className="animate-fade-up animate-fade-up-delay-2 text-lg md:text-xl text-muted-foreground max-w-lg mb-10 leading-relaxed">
+        <p className="animate-fade-up animate-fade-up-delay-2 text-lg md:text-xl text-white/90 max-w-lg mb-10 leading-relaxed">
           Premium stainless steel accessories that look like luxury gold.
           Crafted for the modern woman who deserves brilliance.
         </p>
@@ -53,7 +53,7 @@ const Hero = () => {
           </a>
           <a
             href="#best-sellers"
-            className="border-2 border-burgundy text-dark-brown px-8 py-4 rounded-full text-sm tracking-[0.15em] uppercase font-semibold hover:bg-burgundy hover:text-cream transition-all duration-300 text-center"
+            className="border-2 border-burgundy text-white px-8 py-4 rounded-full text-sm tracking-[0.15em] uppercase font-semibold hover:bg-burgundy hover:text-cream transition-all duration-300 text-center"
           >
             View New Arrivals
           </a>

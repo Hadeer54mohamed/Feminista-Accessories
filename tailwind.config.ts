@@ -59,6 +59,8 @@ export default {
         "dark-brown": "hsl(var(--dark-brown))",
         burgundy: "hsl(var(--burgundy))",
         cream: "hsl(var(--cream))",
+        "off-white": "hsl(var(--off-white))",
+        beige: "hsl(var(--beige))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

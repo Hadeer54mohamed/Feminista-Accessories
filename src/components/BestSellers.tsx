@@ -1,97 +1,282 @@
-import { useState } from "react";
-import { ChevronLeft, ChevronRight, ShoppingBag } from "lucide-react";
+import { useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { ChevronLeft, ChevronRight, ShoppingBag, Star, Eye } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
-import { toast } from "@/hooks/use-toast";
-
+import { toast } from "sonner";
+import { QuickViewModal, type Product } from "@/components/quick-view-modal";
+import necklace2 from "@/assets/necklace-2.jpg";
+import ring2 from "@/assets/ring-2.jpg";
+import ring1 from "@/assets/ring-1.jpg";
+import bracelet1 from "@/assets/bracelet-1.jpg";
+import earring1 from "@/assets/earring-1.jpg";
+import necklace1 from "@/assets/necklace-1.jpg";
+import earrings1 from "@/assets/earring-1.jpg";
 import productButterfly from "@/assets/product-butterfly-necklace.jpg";
-import productRings from "@/assets/product-stackable-rings.jpg";
-import productBracelet from "@/assets/product-chain-bracelet.jpg";
-import productGemstone from "@/assets/product-gemstone-pendant.jpg";
-import productLayered from "@/assets/product-layered-necklace.jpg";
-import productCuff from "@/assets/product-cuff-bracelet.jpg";
+
 
 const bestSellers = [
-  { id: "butterfly-necklace", name: "Gold Butterfly Necklace", price: 250, image: productButterfly },
-  { id: "stackable-rings", name: "Stackable Gold Rings", price: 180, image: productRings },
-  { id: "gemstone-pendant", name: "Gemstone Pendant", price: 320, image: productGemstone },
-  { id: "chain-bracelet", name: "Classic Chain Bracelet", price: 220, image: productBracelet },
-  { id: "layered-necklace", name: "Layered Chain Necklace", price: 280, image: productLayered },
-  { id: "cuff-bracelet", name: "Minimalist Cuff", price: 190, image: productCuff },
+  {
+    id: "bs-1",
+    name: "Pearl Pendant Necklace",
+    price: 149,
+    originalPrice: 189,
+    image: necklace2,
+    rating: 4.9,
+    reviews: 128,
+    sku: "EN-001"
+  },
+  {
+    id: "bs-2",
+    name: "Stackable Gold Rings",
+    price: 119,
+    originalPrice: null,
+    image: ring2,
+    rating: 4.8,
+    reviews: 95,
+    sku: "ER-002"
+  },
+  {
+    id: "bs-3",
+    name: "Butterfly Dreams Ring",
+    price: 89,
+    originalPrice: null,
+    image: ring1,
+    rating: 4.7,
+    reviews: 82,
+    sku: "ER-003"
+  },
+  {
+    id: "bs-4",
+    name: "Heart Charm Bracelet",
+    price: 99,
+    originalPrice: 129,
+    image: bracelet1,
+    rating: 4.9,
+    reviews: 156,
+    sku: "EB-001"
+  },
+  {
+    id: "bs-5",
+    name: "Crystal Hoop Earrings",
+    price: 79,
+    originalPrice: null,
+    image: earring1,
+    rating: 4.6,
+    reviews: 73,
+    sku: "EE-001"
+  },
+  {
+    id: "pearl-pendant-necklace",
+    name: "Pearl Pendant Necklace",
+    price: 149,
+    originalPrice: 189,
+    image: necklace2,
+    rating: 4.6,
+    reviews: 73,
+    sku: "EN-002"
+  },
+  {
+    id: "stackable-gold-rings",
+    name: "Stackable Gold Rings",
+    price: 119,
+    image: ring2,
+    rating: 4.6,
+    reviews: 73,
+    sku: "ER-004"
+  },
+  {
+    id: "butterfly-dreams-ring",
+    name: "Butterfly Dreams Ring",
+    price: 89,
+    image: ring1,
+    rating: 4.6,
+    reviews: 73,
+    sku: "EB-002"
+  },
+  {
+    id: "heart-charm-bracelet",
+    name: "Heart Charm Bracelet",
+    price: 99,
+    originalPrice: 129,
+    image: bracelet1,
+    rating: 4.6,
+    reviews: 73,
+  },
+  {
+    id: "crystal-hoop-earrings",
+    name: "Crystal Hoop Earrings",
+    price: 79,
+    image: earrings1,
+    rating: 4.6,
+    reviews: 73,
+    sku: "EN-003"
+  },
+  {
+    id: "golden-chain-necklace",
+    name: "Golden Chain Necklace",
+    price: 129,
+    image: necklace1,
+    rating: 4.6,
+    reviews: 73,
+    sku: "EE-002"
+  },
+  {
+    id: "butterfly-necklace",
+    name: "Gold Butterfly Necklace",
+    price: 250,
+    originalPrice: 350,
+    image: productButterfly,
+    rating: 4.6,
+    reviews: 73,
+    sku: "EN-004"
+  },
 ];
 
 const BestSellers = () => {
-  const [offset, setOffset] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const { addItem } = useCart();
-  const visibleCount = typeof window !== "undefined" && window.innerWidth < 768 ? 1 : 3;
-  const maxOffset = bestSellers.length - visibleCount;
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
 
-  const prev = () => setOffset((o) => Math.max(0, o - 1));
-  const next = () => setOffset((o) => Math.min(maxOffset, o + 1));
+  const handleAddToCart = (product: (typeof bestSellers)[0]) => {
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      sku: product.sku,
+    });
+    toast.success("Added to cart");
+  };
 
-  const handleAdd = (product: typeof bestSellers[0]) => {
-    addItem({ id: product.id, name: product.name, price: product.price, image: product.image });
-    toast({ title: "Item added to your cart ✨", description: product.name });
+  const scroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({
+        left: direction === "left" ? -320 : 320,
+        behavior: "smooth",
+      });
+    }
   };
 
   return (
-    <section id="best-sellers" className="luxury-section bg-background">
-      <div className="container mx-auto">
-        <div className="flex items-end justify-between mb-12">
+    <section id="best-sellers" className="py-8 md:py-12 bg-[#F3EADE]">
+      <div className="container mx-auto px-4 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col md:flex-row md:items-end justify-between mb-12"
+        >
           <div>
-            <p className="text-sm tracking-[0.3em] uppercase text-accent mb-3">Most Loved</p>
-            <h2 className="section-title mb-0">Best Sellers</h2>
+            <span className="text-gold tracking-[0.3em] text-sm font-medium mb-4 block uppercase">
+              Most Loved
+            </span>
+            <h2 className="font-serif text-4xl md:text-5xl text-dark-brown">
+              Best Sellers
+            </h2>
           </div>
-          <div className="flex gap-3">
-            <button
-              onClick={prev}
-              disabled={offset === 0}
-              className="h-12 w-12 rounded-full border-2 border-burgundy flex items-center justify-center text-dark-brown hover:bg-burgundy hover:text-cream transition-all duration-300 disabled:opacity-30"
+          <div className="flex gap-3 mt-6 md:mt-0">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => scroll("left")}
+              className="rounded-full border-2 border-dark-brown text-dark-brown hover:bg-dark-brown hover:text-cream h-12 w-12"
+              aria-label="Scroll left"
             >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <button
-              onClick={next}
-              disabled={offset >= maxOffset}
-              className="h-12 w-12 rounded-full border-2 border-burgundy flex items-center justify-center text-dark-brown hover:bg-burgundy hover:text-cream transition-all duration-300 disabled:opacity-30"
+              <ChevronLeft className="size-5" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => scroll("right")}
+              className="rounded-full border-2 border-dark-brown text-dark-brown hover:bg-dark-brown hover:text-cream h-12 w-12"
+              aria-label="Scroll right"
             >
-              <ChevronRight className="h-5 w-5" />
-            </button>
+              <ChevronRight className="size-5" />
+            </Button>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="overflow-hidden">
-          <div
-            className="flex gap-6 transition-transform duration-500"
-            style={{ transform: `translateX(-${offset * (100 / visibleCount + 2)}%)` }}
-          >
-            {bestSellers.map((product) => (
-              <div
-                key={product.id}
-                className="min-w-[calc(33.333%-16px)] max-md:min-w-full luxury-card gold-glow-border group cursor-pointer bg-card flex-shrink-0"
-              >
-                <div className="relative overflow-hidden aspect-square">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                </div>
-                <div className="p-5">
-                  <h3 className="font-display text-lg font-semibold text-dark-brown mb-1">{product.name}</h3>
-                  <p className="text-accent font-semibold text-lg mb-4">{product.price} EGP</p>
-                  <button
-                    onClick={() => handleAdd(product)}
-                    className="w-full burgundy-gradient-bg hover:burgundy-gradient-bg-hover text-cream py-3 rounded-full text-sm tracking-[0.1em] uppercase font-semibold transition-all duration-300 flex items-center justify-center gap-2"
+        <div
+          ref={scrollRef}
+          className="flex gap-6 overflow-x-auto pb-4 -mx-4 px-4 snap-x snap-mandatory no-scrollbar"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {bestSellers.map((product, index) => (
+            <motion.div
+              key={product.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.06 }}
+              className="flex-shrink-0 w-[240px] sm:w-[260px] lg:w-[280px] snap-start group"
+            >
+              <div className="relative aspect-square rounded-2xl overflow-hidden bg-beige/30 mb-4 border border-transparent group-hover:border-gold transition-all duration-300">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                {product.originalPrice && (
+                  <span className="absolute top-4 left-4 bg-burgundy text-white text-xs font-medium px-3 py-1 rounded-full">
+                    Sale
+                  </span>
+                )}
+                <div className="absolute inset-0 bg-dark-brown/0 group-hover:bg-dark-brown/20 transition-colors duration-300" />
+                <div className="absolute bottom-4 left-4 right-4 flex gap-2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                  <Button
+                    size="icon"
+                    onClick={() => handleAddToCart(product)}
+                    className="bg-cream hover:bg-gold text-dark-brown rounded-full flex-1 h-11 shadow-md"
+                    aria-label="Add to bag"
                   >
-                    <ShoppingBag className="h-4 w-4" />
-                    Add to Cart
-                  </button>
+                    <ShoppingBag className="size-4" />
+                  </Button>
+                  <Button
+                    size="icon"
+                    onClick={() => setQuickViewProduct({ ...product, rating: product.rating, reviews: product.reviews })}
+                    className="bg-cream hover:bg-dark-brown hover:text-cream text-dark-brown rounded-full h-11 w-11 shadow-md"
+                    aria-label="Quick view"
+                  >
+                    <Eye className="size-4" />
+                  </Button>
                 </div>
               </div>
-            ))}
-          </div>
+              <div>
+                <div className="flex items-center gap-1 mb-2">
+                  <Star className="size-4 fill-gold text-gold" />
+                  <span className="text-dark-brown font-medium text-sm">
+                    {product.rating}
+                  </span>
+                  <span className="text-dark-brown/50 text-sm">
+                    ({product.reviews})
+                  </span>
+                </div>
+                <h3 className="font-serif text-lg text-dark-brown mb-2">
+                  {product.name}
+                </h3>
+                <div className="flex items-center gap-2">
+                  <span className="text-dark-brown font-semibold">
+                    {product.price} EGP
+                  </span>
+                  {product.originalPrice && (
+                    <span className="text-dark-brown/50 line-through text-sm">
+                      {product.originalPrice} EGP
+                    </span>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
+
+      <QuickViewModal
+        product={quickViewProduct}
+        isOpen={!!quickViewProduct}
+        onClose={() => setQuickViewProduct(null)}
+      />
     </section>
   );
 };
