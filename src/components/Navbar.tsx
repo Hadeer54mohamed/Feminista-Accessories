@@ -25,19 +25,19 @@ const Navbar = () => {
   return (
     <div className="fixed top-0 left-0 right-0 z-[100] flex justify-center pointer-events-none">
       <nav
-        className={`w-[95%] md:w-[90%] max-w-7xl mt-4 pointer-events-auto transition-all duration-700 rounded-2xl ${
+        className={`w-[94%] sm:w-[95%] md:w-[90%] max-w-7xl mt-3 sm:mt-4 pointer-events-auto transition-all duration-700 rounded-2xl ${
           scrolled
-            ? "bg-black/60 backdrop-blur-xl shadow-2xl py-3 border border-white/10" 
-            : "bg-black/0 backdrop-blur-sm py-5 border border-white/0"
+            ? "bg-black/60 backdrop-blur-xl shadow-2xl py-2.5 sm:py-3 border border-white/10" 
+            : "bg-black/0 backdrop-blur-sm py-3.5 sm:py-5 border border-white/0"
         }`}
       >
-        <div className="flex items-center justify-between px-6 md:px-10">
+        <div className="flex items-center justify-between px-4 sm:px-6 md:px-10">
           {/* Logo */}
           <a href="#" className="flex items-center transition-transform hover:scale-105">
             <img
               src={logo}
               alt="Feminista Accessories"
-              className={`w-auto transition-all duration-500 ${scrolled ? "h-12" : "h-16"}`}
+              className={`w-auto transition-all duration-500 ${scrolled ? "h-9 sm:h-12" : "h-11 sm:h-16"}`}
             />
           </a>
 

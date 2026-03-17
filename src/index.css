@@ -73,9 +73,15 @@
   * {
     @apply border-border;
   }
+  html {
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
@@ -130,12 +136,13 @@
   }
 
   .luxury-section {
-    @apply py-12 md:py-20 px-4;
+    @apply py-10 md:py-20 px-4;
+    overflow-x: hidden;
   }
 
   .section-title {
     font-family: var(--font-display);
-    @apply text-3xl md:text-4xl lg:text-5xl font-semibold tracking-wide text-dark-brown mb-4;
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold tracking-wide text-dark-brown mb-4;
   }
 
   .section-subtitle {
@@ -236,56 +243,33 @@
   display: none;
 }
 
-/* Instagram Embeds - video only, hide captions & extras */
-.ig-reel-card .instagram-media,
-.ig-reel-card .instagram-media-rendered {
-  width: 100% !important;
-  min-width: 0 !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
-
-.ig-reel-card iframe {
-  width: 100% !important;
-  min-width: 0 !important;
-  max-width: 100% !important;
-  border: none !important;
-  border-radius: 0 !important;
-}
-
-.ig-reel-wrapper {
+/* Instagram Reels - crop IG header/footer to show video only */
+.ig-reel-card {
   position: relative;
   overflow: hidden;
 }
 
-.ig-reel-wrapper .instagram-media-rendered,
-.ig-reel-wrapper iframe {
+.ig-reel-card iframe {
   position: absolute;
-  top: -1px;
+  top: -64px;
   left: -1px;
   width: calc(100% + 2px) !important;
-  height: calc(100% + 2px) !important;
+  height: calc(100% + 130px) !important;
   border: none !important;
+  pointer-events: none;
 }
 
-.ig-modal-wrapper .instagram-media,
-.ig-modal-wrapper .instagram-media-rendered {
-  width: 100% !important;
-  min-width: 0 !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  box-shadow: none !important;
+.ig-reel-modal {
+  position: relative;
+  overflow: hidden;
 }
 
-.ig-modal-wrapper iframe {
-  width: 100% !important;
-  min-width: 0 !important;
+.ig-reel-modal iframe {
+  position: absolute;
+  top: -56px;
+  left: -1px;
+  width: calc(100% + 2px) !important;
+  height: calc(100% + 100px) !important;
   border: none !important;
 }
 .scrollbar-hide::-webkit-scrollbar {

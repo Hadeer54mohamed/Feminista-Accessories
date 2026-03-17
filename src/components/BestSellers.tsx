@@ -169,10 +169,10 @@ const BestSellers = () => {
           className="flex flex-col md:flex-row md:items-end justify-between mb-12"
         >
           <div>
-            <span className="text-gold tracking-[0.3em] text-sm font-medium mb-4 block uppercase">
+            <span className="text-gold tracking-[0.3em] text-xs sm:text-sm font-medium mb-2 sm:mb-4 block uppercase">
               Most Loved
             </span>
-            <h2 className="font-serif text-4xl md:text-5xl text-dark-brown">
+            <h2 className="font-serif text-2xl sm:text-4xl md:text-5xl text-dark-brown">
               Best Sellers
             </h2>
           </div>
@@ -181,19 +181,19 @@ const BestSellers = () => {
               variant="outline"
               size="icon"
               onClick={() => scroll("left")}
-              className="rounded-full border-2 border-dark-brown text-dark-brown hover:bg-dark-brown hover:text-cream h-12 w-12"
+              className="rounded-full border-2 border-dark-brown text-dark-brown hover:bg-dark-brown hover:text-cream h-10 w-10 sm:h-12 sm:w-12"
               aria-label="Scroll left"
             >
-              <ChevronLeft className="size-5" />
+              <ChevronLeft className="size-4 sm:size-5" />
             </Button>
             <Button
               variant="outline"
               size="icon"
               onClick={() => scroll("right")}
-              className="rounded-full border-2 border-dark-brown text-dark-brown hover:bg-dark-brown hover:text-cream h-12 w-12"
+              className="rounded-full border-2 border-dark-brown text-dark-brown hover:bg-dark-brown hover:text-cream h-10 w-10 sm:h-12 sm:w-12"
               aria-label="Scroll right"
             >
-              <ChevronRight className="size-5" />
+              <ChevronRight className="size-4 sm:size-5" />
             </Button>
           </div>
         </motion.div>
@@ -210,58 +210,58 @@ const BestSellers = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.06 }}
-              className="flex-shrink-0 w-[240px] sm:w-[260px] lg:w-[280px] snap-start group"
+              className="flex-shrink-0 w-[180px] sm:w-[240px] md:w-[260px] lg:w-[280px] snap-start group"
             >
-              <div className="relative aspect-square rounded-2xl overflow-hidden bg-beige/30 mb-4 border border-transparent group-hover:border-gold transition-all duration-300">
+              <div className="relative aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-beige/30 mb-3 sm:mb-4 border border-transparent group-hover:border-gold transition-all duration-300">
                 <img
                   src={product.image}
                   alt={product.name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 {product.originalPrice && (
-                  <span className="absolute top-4 left-4 bg-burgundy text-white text-xs font-medium px-3 py-1 rounded-full">
+                  <span className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-burgundy text-white text-[10px] sm:text-xs font-medium px-2 sm:px-3 py-0.5 sm:py-1 rounded-full">
                     Sale
                   </span>
                 )}
                 <div className="absolute inset-0 bg-dark-brown/0 group-hover:bg-dark-brown/20 transition-colors duration-300" />
-                <div className="absolute bottom-4 left-4 right-4 flex gap-2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                <div className="absolute bottom-2 left-2 right-2 sm:bottom-4 sm:left-4 sm:right-4 flex gap-1.5 sm:gap-2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
                   <Button
                     size="icon"
                     onClick={() => handleAddToCart(product)}
-                    className="bg-cream hover:bg-gold text-dark-brown rounded-full flex-1 h-11 shadow-md"
+                    className="bg-cream hover:bg-gold text-dark-brown rounded-full flex-1 h-9 sm:h-11 shadow-md"
                     aria-label="Add to bag"
                   >
-                    <ShoppingBag className="size-4" />
+                    <ShoppingBag className="size-3.5 sm:size-4" />
                   </Button>
                   <Button
                     size="icon"
                     onClick={() => setQuickViewProduct({ ...product, rating: product.rating, reviews: product.reviews })}
-                    className="bg-cream hover:bg-dark-brown hover:text-cream text-dark-brown rounded-full h-11 w-11 shadow-md"
+                    className="bg-cream hover:bg-dark-brown hover:text-cream text-dark-brown rounded-full h-9 w-9 sm:h-11 sm:w-11 shadow-md"
                     aria-label="Quick view"
                   >
-                    <Eye className="size-4" />
+                    <Eye className="size-3.5 sm:size-4" />
                   </Button>
                 </div>
               </div>
               <div>
-                <div className="flex items-center gap-1 mb-2">
-                  <Star className="size-4 fill-gold text-gold" />
-                  <span className="text-dark-brown font-medium text-sm">
+                <div className="flex items-center gap-1 mb-1.5 sm:mb-2">
+                  <Star className="size-3 sm:size-4 fill-gold text-gold" />
+                  <span className="text-dark-brown font-medium text-xs sm:text-sm">
                     {product.rating}
                   </span>
-                  <span className="text-dark-brown/50 text-sm">
+                  <span className="text-dark-brown/50 text-xs sm:text-sm">
                     ({product.reviews})
                   </span>
                 </div>
-                <h3 className="font-serif text-lg text-dark-brown mb-2">
+                <h3 className="font-serif text-sm sm:text-lg text-dark-brown mb-1.5 sm:mb-2 line-clamp-1">
                   {product.name}
                 </h3>
-                <div className="flex items-center gap-2">
-                  <span className="text-dark-brown font-semibold">
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <span className="text-dark-brown font-semibold text-sm sm:text-base">
                     {product.price} EGP
                   </span>
                   {product.originalPrice && (
-                    <span className="text-dark-brown/50 line-through text-sm">
+                    <span className="text-dark-brown/50 line-through text-xs sm:text-sm">
                       {product.originalPrice} EGP
                     </span>
                   )}

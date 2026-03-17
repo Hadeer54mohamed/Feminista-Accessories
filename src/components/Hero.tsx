@@ -2,7 +2,7 @@ import heroImg from "@/assets/hero-jewelry.jpg";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[80vh] sm:min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0">
         <img
@@ -30,30 +30,30 @@ const Hero = () => {
       ))}
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 text-left max-w-3xl ml-auto mr-auto md:ml-[8%]">
-        <p className="animate-fade-up text-sm tracking-[0.3em] uppercase text-accent mb-6 font-medium">
+      <div className="relative z-10 mx-auto px-5 sm:px-6 text-left max-w-3xl ml-auto mr-auto md:ml-[8%]">
+        <p className="animate-fade-up text-xs sm:text-sm tracking-[0.3em] uppercase text-accent mb-4 sm:mb-6 font-medium">
           Feminista Accessories
         </p>
-        <h1 className="animate-fade-up animate-fade-up-delay-1 luxury-heading text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-6 drop-shadow-lg">
+        <h1 className="animate-fade-up animate-fade-up-delay-1 luxury-heading text-[2.5rem] sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-4 sm:mb-6 drop-shadow-lg">
           Timeless Elegance
           <br />
           <span className="gold-gradient-text drop-shadow-md">for Every Woman</span>
         </h1>
-        <p className="animate-fade-up animate-fade-up-delay-2 text-lg md:text-xl text-white/90 max-w-lg mb-10 leading-relaxed">
+        <p className="animate-fade-up animate-fade-up-delay-2 text-base sm:text-lg md:text-xl text-white/90 max-w-lg mb-8 sm:mb-10 leading-relaxed">
           Premium stainless steel accessories that look like luxury gold.
           Crafted for the modern woman who deserves brilliance.
         </p>
-        <div className="animate-fade-up animate-fade-up-delay-3 flex flex-col sm:flex-row gap-4">
+        <div className="animate-fade-up animate-fade-up-delay-3 flex flex-col sm:flex-row gap-3 sm:gap-4">
           <a
             href="#collection"
-            className="burgundy-gradient-bg hover:burgundy-gradient-bg-hover text-cream px-8 py-4 rounded-full text-sm tracking-[0.15em] uppercase font-semibold transition-all duration-300 text-center"
+            className="burgundy-gradient-bg hover:burgundy-gradient-bg-hover text-cream px-6 sm:px-8 py-3.5 sm:py-4 rounded-full text-xs sm:text-sm tracking-[0.15em] uppercase font-semibold transition-all duration-300 text-center"
             style={{ boxShadow: "var(--shadow-luxury)" }}
           >
             Shop Collection
           </a>
           <a
             href="#best-sellers"
-            className="border-2 border-burgundy text-white px-8 py-4 rounded-full text-sm tracking-[0.15em] uppercase font-semibold hover:bg-burgundy hover:text-cream transition-all duration-300 text-center"
+            className="border-2 border-burgundy text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-full text-xs sm:text-sm tracking-[0.15em] uppercase font-semibold hover:bg-burgundy hover:text-cream transition-all duration-300 text-center"
           >
             View New Arrivals
           </a>

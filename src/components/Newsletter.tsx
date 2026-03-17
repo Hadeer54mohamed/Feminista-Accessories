@@ -8,8 +8,8 @@ const Newsletter = () => {
           <p className="text-sm tracking-[0.3em] uppercase text-accent mb-3">
             Stay Connected
           </p>
-          <h2 className="section-title text-3xl md:text-4xl font-bold mb-6">Join the Feminista Club</h2>
-          <p className="section-subtitle mb-12 max-w-xl mx-auto opacity-80">
+          <h2 className="section-title font-bold mb-4 sm:mb-6">Join the Feminista Club</h2>
+          <p className="section-subtitle mb-8 sm:mb-12 max-w-xl mx-auto opacity-80 text-sm sm:text-base md:text-lg">
             Be the first to know about new arrivals, exclusive offers, and styling tips.
           </p>
 

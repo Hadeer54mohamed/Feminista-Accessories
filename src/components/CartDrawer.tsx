@@ -50,10 +50,10 @@ export function CartPanel() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed top-0 right-0 h-full w-full max-w-md bg-off-white z-[110] shadow-2xl flex flex-col"
+            className="fixed top-0 right-0 h-[100dvh] w-full sm:max-w-md bg-off-white z-[110] shadow-2xl flex flex-col"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-beige">
+            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-beige">
               <div className="flex items-center gap-3">
                 <ShoppingBag className="size-5 text-dark-brown" />
                 <h2 className="font-serif text-xl text-dark-brown">
@@ -75,7 +75,7 @@ export function CartPanel() {
             </div>
 
             {/* Cart Items */}
-            <div className="flex-1 overflow-y-auto p-6">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6">
               {items.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center">
                   <div className="bg-beige/50 rounded-full p-6 mb-4">
@@ -170,7 +170,7 @@ export function CartPanel() {
 
             {/* Footer */}
             {items.length > 0 && (
-              <div className="border-t border-beige p-6">
+              <div className="border-t border-beige p-4 sm:p-6 pb-6 sm:pb-6">
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-dark-brown/70">Subtotal</span>
                   <span className="font-serif text-xl text-dark-brown">

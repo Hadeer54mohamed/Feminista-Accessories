@@ -64,24 +64,24 @@ const About = () => {
               Our Story
             </span>
 
-            <h2 className="font-serif text-3xl md:text-4xl text-dark-brown mb-5">
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-dark-brown mb-4 sm:mb-5">
               Crafted for the Modern Woman
             </h2>
 
-            <p className="text-dark-brown/70 text-lg leading-relaxed mb-6">
+            <p className="text-dark-brown/70 text-base sm:text-lg leading-relaxed mb-4 sm:mb-6">
               At Feminista Accessories, we believe every woman deserves to feel
               extraordinary. Our premium stainless steel jewelry offers the
               luxurious look of gold without the hefty price tag or worry of
               tarnishing.
             </p>
 
-            <p className="text-dark-brown/70 leading-relaxed mb-8">
+            <p className="text-dark-brown/70 leading-relaxed text-sm sm:text-base mb-6 sm:mb-8">
               Each piece is thoughtfully designed and expertly crafted to
               complement your unique style, from everyday elegance to special
               occasion glamour.
             </p>
 
-            <div className="grid grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
               {features.map((feature, index) => (
                 <motion.div
                   key={feature.title}

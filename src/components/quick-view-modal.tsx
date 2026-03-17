@@ -80,65 +80,65 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
           />
 
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4"
             onClick={onClose}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 100 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-3xl bg-cream rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
+              className="relative w-full sm:max-w-3xl bg-cream rounded-t-2xl sm:rounded-2xl shadow-2xl overflow-hidden max-h-[92vh] sm:max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={onClose}
-                className="absolute top-4 right-4 z-10 text-dark-brown hover:bg-beige/50 rounded-full"
+                className="absolute top-3 right-3 z-10 text-dark-brown hover:bg-beige/50 rounded-full bg-cream/80 backdrop-blur-sm"
                 aria-label="Close quick view"
               >
                 <X className="size-5" />
               </Button>
 
-              <div className="grid md:grid-cols-2">
+              <div className="grid sm:grid-cols-2">
                 {/* Image */}
-                <div className="relative bg-beige/30 md:h-full">
+                <div className="relative bg-beige/30 h-[35vh] sm:h-auto sm:min-h-full">
                   <img
                     src={product.image}
                     alt={product.name}
                     className="w-full h-full object-cover"
                   />
                   {product.isNew && !product.originalPrice && (
-                    <span className="absolute top-4 left-4 bg-burgundy text-cream text-xs font-medium px-3 py-1 rounded-full">
+                    <span className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-burgundy text-cream text-xs font-medium px-3 py-1 rounded-full">
                       New
                     </span>
                   )}
                   {product.originalPrice && (
-                    <span className="absolute top-4 left-4 bg-burgundy text-cream text-xs font-medium px-3 py-1 rounded-full">
+                    <span className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-burgundy text-cream text-xs font-medium px-3 py-1 rounded-full">
                       Sale
                     </span>
                   )}
                 </div>
 
                 {/* Details */}
-                <div className="p-8 flex flex-col">
+                <div className="p-5 sm:p-8 flex flex-col">
                   {product.category && (
                     <span className="text-gold tracking-[0.2em] text-sm font-medium uppercase">
                       {product.category}
                     </span>
                   )}
-                  <h2 className="font-serif text-2xl md:text-3xl text-dark-brown mt-2 mb-3">
+                  <h2 className="font-serif text-xl sm:text-2xl md:text-3xl text-dark-brown mt-1 sm:mt-2 mb-2 sm:mb-3">
                     {product.name}
                   </h2>
 
                   {product.rating && (
-                    <div className="flex items-center gap-2 mb-4">
+                    <div className="flex items-center gap-2 mb-3 sm:mb-4">
                       <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
                           <Star
                             key={i}
-                            className={`size-4 ${
+                            className={`size-3.5 sm:size-4 ${
                               i < Math.floor(product.rating!)
                                 ? "fill-gold text-gold"
                                 : "fill-beige text-beige"
@@ -157,43 +157,43 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
                     </div>
                   )}
 
-                  <div className="flex items-center gap-3 mb-6">
-                    <span className="font-serif text-2xl text-dark-brown">
-                      ${product.price}
+                  <div className="flex items-center gap-3 mb-4 sm:mb-6">
+                    <span className="font-serif text-xl sm:text-2xl text-dark-brown">
+                      {product.price} EGP
                     </span>
                     {product.originalPrice && (
-                      <span className="text-dark-brown/50 line-through text-lg">
-                        ${product.originalPrice}
+                      <span className="text-dark-brown/50 line-through text-base sm:text-lg">
+                        {product.originalPrice} EGP
                       </span>
                     )}
                   </div>
 
-                  <p className="text-dark-brown/70 mb-6 flex-1">
+                  <p className="text-dark-brown/70 mb-4 sm:mb-6 flex-1 text-sm sm:text-base leading-relaxed">
                     {product.description ||
                       "Crafted with premium stainless steel, this piece is designed to last. Hypoallergenic, water-resistant, and perfect for everyday elegance."}
                   </p>
 
                   {/* Quantity */}
-                  <div className="flex items-center gap-4 mb-6">
-                    <span className="text-dark-brown font-medium">Quantity:</span>
+                  <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+                    <span className="text-dark-brown font-medium text-sm sm:text-base">Quantity:</span>
                     <div className="flex items-center gap-1 bg-beige/50 rounded-full">
                       <Button
                         variant="ghost"
                         size="icon"
                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="h-10 w-10 rounded-full hover:bg-beige text-dark-brown"
+                        className="h-9 w-9 sm:h-10 sm:w-10 rounded-full hover:bg-beige text-dark-brown"
                         aria-label="Decrease quantity"
                       >
                         <Minus className="size-4" />
                       </Button>
-                      <span className="w-10 text-center text-dark-brown font-medium">
+                      <span className="w-8 sm:w-10 text-center text-dark-brown font-medium">
                         {quantity}
                       </span>
                       <Button
                         variant="ghost"
                         size="icon"
                         onClick={() => setQuantity(quantity + 1)}
-                        className="h-10 w-10 rounded-full hover:bg-beige text-dark-brown"
+                        className="h-9 w-9 sm:h-10 sm:w-10 rounded-full hover:bg-beige text-dark-brown"
                         aria-label="Increase quantity"
                       >
                         <Plus className="size-4" />
@@ -204,7 +204,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
                   {/* Actions */}
                   <Button
                     onClick={handleAddToCart}
-                    className="w-full bg-dark-brown hover:bg-dark-brown/90 text-cream py-6 text-base font-medium rounded-full transition-all duration-300 hover:shadow-lg flex items-center justify-center gap-2"
+                    className="w-full bg-dark-brown hover:bg-dark-brown/90 text-cream py-5 sm:py-6 text-sm sm:text-base font-medium rounded-full transition-all duration-300 hover:shadow-lg flex items-center justify-center gap-2"
                   >
                     <ShoppingBag className="size-5" />
                     Add to Cart

@@ -139,33 +139,33 @@ const ProductCard = React.memo(({ product }: { product: typeof products[0] }) =>
             </div>
           </div>
           {product.tag && (
-            <span className="absolute top-4 left-4 bg-burgundy text-cream text-xs tracking-[0.1em] uppercase px-3 py-1 rounded-full font-semibold z-10">
+            <span className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-burgundy text-cream text-[9px] sm:text-xs tracking-[0.1em] uppercase px-2 sm:px-3 py-0.5 sm:py-1 rounded-full font-semibold z-10">
               {product.tag}
             </span>
           )}
           {product.oldPrice && (
-            <span className="absolute top-4 right-4 bg-burgundy text-cream text-[10px] px-2 py-1 rounded-full font-bold uppercase z-10">
+            <span className="absolute top-2 right-2 sm:top-4 sm:right-4 bg-burgundy text-cream text-[8px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full font-bold uppercase z-10">
               Save {Math.round((1 - product.price / product.oldPrice) * 100)}%
             </span>
           )}
         </div>
 
-        <div className="p-5 text-center">
-          <h3 className="font-display text-sm md:text-base tracking-wide font-medium text-dark-brown mb-2">
+        <div className="p-3 sm:p-5 text-center">
+          <h3 className="font-display text-xs sm:text-sm md:text-base tracking-wide font-medium text-dark-brown mb-1.5 sm:mb-2 line-clamp-1">
             {product.name}
           </h3>
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <p className="text-accent font-serif italic text-lg">{product.price} EGP</p>
+          <div className="flex items-center justify-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+            <p className="text-accent font-serif italic text-sm sm:text-lg">{product.price} EGP</p>
             {product.oldPrice && (
-              <p className="text-gray-400 line-through text-sm">{product.oldPrice} EGP</p>
+              <p className="text-gray-400 line-through text-xs sm:text-sm">{product.oldPrice} EGP</p>
             )}
           </div>
           <button
             onClick={handleAdd}
-            className="w-full burgundy-gradient-bg hover:burgundy-gradient-bg-hover text-cream py-3 rounded-full text-sm tracking-[0.1em] uppercase font-semibold transition-all duration-300 flex items-center justify-center gap-2"
+            className="w-full burgundy-gradient-bg hover:burgundy-gradient-bg-hover text-cream py-2.5 sm:py-3 rounded-full text-[10px] sm:text-sm tracking-[0.1em] uppercase font-semibold transition-all duration-300 flex items-center justify-center gap-1.5 sm:gap-2"
             style={{ boxShadow: "var(--shadow-luxury)" }}
           >
-            <ShoppingBag className="h-4 w-4" />
+            <ShoppingBag className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             Add to Cart
           </button>
         </div>
@@ -222,16 +222,16 @@ const FeaturedCollection = ({ selectedCategory }: { selectedCategory: string }) 
   return (
     <section ref={sectionRef} id="collection" className="luxury-section bg-background pt-20 scroll-mt-20">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+        <div className="text-center mb-8 sm:mb-16">
           <p className="text-sm tracking-[0.3em] uppercase text-accent mb-3">Curated for You</p>
-          <h2 className="section-title text-4xl md:text-5xl font-bold">Featured Collection</h2>
-          <p className="section-subtitle mt-4 max-w-2xl mx-auto opacity-80">
+          <h2 className="section-title font-bold">Featured Collection</h2>
+          <p className="section-subtitle mt-3 sm:mt-4 max-w-2xl mx-auto opacity-80 text-sm sm:text-base md:text-lg">
             Each piece is crafted with precision, designed to make you shine.
           </p>
         </div>
 
         {/* Grid المنتجات */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 min-h-[400px]">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 md:gap-8 min-h-[300px] sm:min-h-[400px]">
           {currentProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
