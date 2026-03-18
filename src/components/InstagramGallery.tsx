@@ -2,33 +2,62 @@ import { useCallback, useEffect, useState } from "react";
 import { X, Instagram, Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, EffectCoverflow } from "swiper/modules";
+import { sanityClient } from "@/lib/sanity";
 
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/effect-coverflow";
 
-const reels = [
-  { link: "https://www.instagram.com/reel/DS2iNvoCO20/" },
-  { link: "https://www.instagram.com/reel/DOrTaX-AsjR/" },
-  { link: "https://www.instagram.com/reel/DOeyi42gtNp/" },
-  { link: "https://www.instagram.com/reel/DIo_6_BInbk/" },
-  { link: "https://www.instagram.com/reel/DIcl85mC8Iu/" },
-  { link: "https://www.instagram.com/reel/DL4jHqwC4yw/" },
-  { link: "https://www.instagram.com/reel/DKHcnH_Cscq/" },
-  { link: "https://www.instagram.com/reel/DE5ozvBibxi/" },
+interface ReelItem {
+  id: string;
+  link: string;
+}
+
+const fallbackReels: ReelItem[] = [
+  { id: "r1", link: "https://www.instagram.com/reel/DS2iNvoCO20/" },
+  { id: "r2", link: "https://www.instagram.com/reel/DOrTaX-AsjR/" },
+  { id: "r3", link: "https://www.instagram.com/reel/DOeyi42gtNp/" },
+  { id: "r4", link: "https://www.instagram.com/reel/DIo_6_BInbk/" },
+  { id: "r5", link: "https://www.instagram.com/reel/DIcl85mC8Iu/" },
+  { id: "r6", link: "https://www.instagram.com/reel/DL4jHqwC4yw/" },
+  { id: "r7", link: "https://www.instagram.com/reel/DKHcnH_Cscq/" },
+  { id: "r8", link: "https://www.instagram.com/reel/DE5ozvBibxi/" },
 ];
 
+const REELS_QUERY = `*[_type == "instagramReel"] | order(order asc) {
+  _id, title, link
+}`;
+
+function normalizeLink(link: string) {
+  let url = link.trim();
+  if (!url.startsWith("http")) url = `https://${url}`;
+  return url;
+}
+
 function getEmbedUrl(link: string) {
-  const match = link.match(/\/reel\/([^/]+)/);
+  const url = normalizeLink(link);
+  const match = url.match(/\/reel\/([^/]+)/);
   return match
     ? `https://www.instagram.com/reel/${match[1]}/embed/`
-    : link;
+    : url;
 }
 
 const InstagramGallery = () => {
+  const [reels, setReels] = useState<ReelItem[]>(fallbackReels);
   const [selectedReel, setSelectedReel] = useState<string | null>(null);
   const [isModalClosing, setIsModalClosing] = useState(false);
   const [loadedFrames, setLoadedFrames] = useState<Set<number>>(new Set());
+
+  useEffect(() => {
+    sanityClient
+      .fetch(REELS_QUERY)
+      .then((data: any[]) => {
+        if (data.length > 0) {
+          setReels(data.map((r) => ({ id: r._id, link: r.link })));
+        }
+      })
+      .catch(console.error);
+  }, []);
 
   const closeModal = useCallback(() => {
     setIsModalClosing(true);
@@ -100,7 +129,7 @@ const InstagramGallery = () => {
             className="!overflow-visible !pb-2"
           >
             {reels.map((reel, i) => (
-              <SwiperSlide key={i} className="!h-auto py-2">
+              <SwiperSlide key={reel.id} className="!h-auto py-2">
                 {({ isActive }) => (
                   <div
                     className={`rounded-[2rem] overflow-hidden relative transition-all duration-500 border border-white/10 ${isActive
@@ -112,8 +141,8 @@ const InstagramGallery = () => {
                       {!loadedFrames.has(i) && (
                         <div className="absolute inset-0 z-[2] flex items-center justify-center bg-black/80 backdrop-blur-sm">
                           <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/20 animate-pulse">
-  <Play className="w-6 h-6 text-white ml-0.5" />
-</div>
+                            <Play className="w-6 h-6 text-white ml-0.5" />
+                          </div>
                         </div>
                       )}
 

@@ -1,108 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ShoppingBag, Eye, ChevronLeft, ChevronRight } from "lucide-react";
+import { ShoppingBag, Eye, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "@/hooks/use-toast";
 import { QuickViewModal, type Product } from "@/components/quick-view-modal";
+import { sanityClient, urlFor } from "@/lib/sanity";
 
-import productButterfly from "@/assets/product-butterfly-necklace.jpg";
-import productRings from "@/assets/product-stackable-rings.jpg";
-import productBracelet from "@/assets/product-chain-bracelet.jpg";
-import productEarrings from "@/assets/product-hoop-earrings.jpg";
-import productGemstone from "@/assets/product-gemstone-pendant.jpg";
-import productLayered from "@/assets/product-layered-necklace.jpg";
-import productCuff from "@/assets/product-cuff-bracelet.jpg";
-import ring1 from "@/assets/ring-1.jpg";
-import necklace1 from "@/assets/necklace-1.jpg";
-import bracelet1 from "@/assets/bracelet-1.jpg";
-import earrings1 from "@/assets/earring-1.jpg";
-import necklace2 from "@/assets/necklace-2.jpg";
-import ring2 from "@/assets/ring-2.jpg";
+interface ProductItem {
+  id: string;
+  name: string;
+  price: number;
+  oldPrice?: number;
+  image: string;
+  tag?: string;
+  category: string;
+  sku?: string;
+}
 
+const PRODUCTS_QUERY = `*[_type == "featuredProduct"] | order(order asc) {
+  _id, name, slug, price, oldPrice, image, tag, "category": category->name, sku, order
+}`;
 
-const products = [
-  {
-    id: "pearl-pendant-necklace",
-    name: "Pearl Pendant Necklace",
-    price: 149,
-    oldPrice: 189,
-    image: necklace2,
-    tag: "New",
-    category: "Necklaces",
-    sku: "EN-001"
-  },
-  {
-    id: "stackable-gold-rings",
-    name: "Stackable Gold Rings",
-    price: 119,
-    image: ring2,
-    tag: "Best Seller",
-    category: "Rings",
-    sku: "ER-002"
-  },
-  {
-    id: "butterfly-dreams-ring",
-    name: "Butterfly Dreams Ring",
-    price: 89,
-    image: ring1,
-    category: "Rings",
-    sku: "ER-003"
-  },
-  {
-    id: "heart-charm-bracelet",
-    name: "Heart Charm Bracelet",
-    price: 99,
-    oldPrice: 129,
-    image: bracelet1,
-    category: "Bracelets",
-    sku: "EB-001"
-  },
-  {
-    id: "crystal-hoop-earrings",
-    name: "Crystal Hoop Earrings",
-    price: 79,
-    image: earrings1,
-    category: "Earrings",
-    sku: "EE-001"
-  },
-  {
-    id: "golden-chain-necklace",
-    name: "Golden Chain Necklace",
-    price: 129,
-    image: necklace1,
-    tag: "New",
-    category: "Necklaces",
-    sku: "EN-002"
-  },
-  {
-    id: "butterfly-necklace",
-    name: "Gold Butterfly Necklace",
-    price: 250,
-    oldPrice: 350,
-    image: productButterfly,
-    tag: "Premium",
-    category: "Necklaces",
-    sku: "EN-003"
-  },
-  {
-    id: "minimal-chain-bracelet",
-    name: "Minimal Chain Bracelet",
-    price: 140,
-    image: productBracelet,
-    category: "Bracelets",
-    sku: "EB-002"
-  },
-  { id: "butterfly-necklace", name: "Gold Butterfly Necklace", price: 250, oldPrice: 350, image: productButterfly, tag: "New", category: "Necklace" },
-  { id: "stackable-rings", name: "Stackable Gold Rings", price: 180, image: productRings, tag: "Best Seller", category: "Rings", sku: "ER-004" },
-  { id: "chain-bracelet", name: "Classic Chain Bracelet", price: 220, image: productBracelet, category: "Bracelet", sku: "EB-003" },
-  { id: "hoop-earrings", name: "Elegant Hoop Earrings", price: 150, image: productEarrings, category: "Earrings", sku: "EE-002" },
-  { id: "gemstone-pendant", name: "Gemstone Pendant", price: 320, image: productGemstone, tag: "Premium", category: "Pendant", sku: "EN-004" },
-  { id: "layered-necklace", name: "Layered Chain Necklace", price: 280, image: productLayered, category: "Necklace", sku: "EN-005" },
-  { id: "cuff-bracelet", name: "Minimalist Cuff", price: 190, image: productCuff, category: "Bracelet", sku: "EB-004" },
-  { id: "crystal-drop", name: "Crystal Drop Earrings", price: 200, image: productEarrings, category: "Earrings", sku: "EE-003" },
- 
-];
-
-const ProductCard = React.memo(({ product }: { product: typeof products[0] }) => {
+const ProductCard = React.memo(({ product }: { product: ProductItem }) => {
   const { addItem } = useCart();
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
 
@@ -119,6 +37,7 @@ const ProductCard = React.memo(({ product }: { product: typeof products[0] }) =>
     originalPrice: product.oldPrice ?? null,
     image: product.image,
     category: product.category,
+    sku: product.sku,
   };
 
   return (
@@ -132,6 +51,7 @@ const ProductCard = React.memo(({ product }: { product: typeof products[0] }) =>
             src={product.image}
             alt={product.name}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
             <div className="bg-white/90 p-3 rounded-full shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
@@ -181,9 +101,36 @@ const ProductCard = React.memo(({ product }: { product: typeof products[0] }) =>
 });
 
 const FeaturedCollection = ({ selectedCategory }: { selectedCategory: string }) => {
+  const [products, setProducts] = useState<ProductItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductsPerPage] = useState(8);
   const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    sanityClient
+      .fetch(PRODUCTS_QUERY)
+      .then((data: any[]) => {
+        if (data.length > 0) {
+          setProducts(
+            data
+              .filter((p) => p.image)
+              .map((p) => ({
+                id: p._id,
+                name: p.name,
+                price: p.price,
+                oldPrice: p.oldPrice,
+                image: urlFor(p.image).width(600).height(600).url(),
+                tag: p.tag,
+                category: p.category,
+                sku: p.sku,
+              }))
+          );
+        }
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, []);
 
   const filteredProducts = selectedCategory === "All"
     ? products
@@ -211,6 +158,7 @@ const FeaturedCollection = ({ selectedCategory }: { selectedCategory: string }) 
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const startIndex = (currentPage - 1) * productsPerPage;
   const currentProducts = filteredProducts.slice(startIndex, startIndex + productsPerPage);
+
   const handlePrev = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
@@ -230,14 +178,22 @@ const FeaturedCollection = ({ selectedCategory }: { selectedCategory: string }) 
           </p>
         </div>
 
-        {/* Grid المنتجات */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 md:gap-8 min-h-[300px] sm:min-h-[400px]">
-          {currentProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex items-center justify-center min-h-[300px] sm:min-h-[400px]">
+            <Loader2 className="h-8 w-8 animate-spin text-accent" />
+          </div>
+        ) : currentProducts.length === 0 ? (
+          <div className="flex items-center justify-center min-h-[300px] sm:min-h-[400px]">
+            <p className="text-gray-400 text-lg">No products found</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 md:gap-8 min-h-[300px] sm:min-h-[400px]">
+            {currentProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
 
-        {/* التحكم في الصفحات */}
         {totalPages > 1 && (
           <div className="flex flex-col items-center gap-6 mt-16">
             <div className="flex items-center gap-6">
@@ -262,7 +218,6 @@ const FeaturedCollection = ({ selectedCategory }: { selectedCategory: string }) 
               </button>
             </div>
 
-            {/* Pagination Dots (اختياري) */}
             <div className="flex gap-2">
               {Array.from({ length: totalPages }, (_, i) => (
                 <button
@@ -279,4 +234,5 @@ const FeaturedCollection = ({ selectedCategory }: { selectedCategory: string }) 
     </section>
   );
 };
+
 export default FeaturedCollection;

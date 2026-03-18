@@ -1,46 +1,42 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { sanityClient } from "@/lib/sanity";
 
-const testimonials = [
-  {
-    name: "Sara A.",
-    text: "I couldn't believe these are stainless steel! They look exactly like real gold. Everyone asks me where I got my jewelry.",
-    rating: 5,
-  },
-  {
-    name: "Nour M.",
-    text: "The quality is exceptional. I've been wearing my Feminista bracelet daily for months and it still looks brand new.",
-    rating: 5,
-  },
-  {
-    name: "Hana K.",
-    text: "Finally, affordable luxury that doesn't compromise on elegance. Feminista changed my accessory game completely.",
-    rating: 5,
-  },
-  {
-    name: "Mariam R.",
-    text: "الإكسسوارات فخمة جداً والخامة ممتازة. أول مرة ألاقي حاجة بالجودة دي بسعر معقول!",
-    rating: 5,
-  },
-  {
-    name: "Yasmin T.",
-    text: "I ordered a necklace set for my sister's birthday and she absolutely loved it. The packaging was beautiful too!",
-    rating: 5,
-  },
-  {
-    name: "Dina S.",
-    text: "بقالي شهور بلبس الغويشة وما اتغيرش لونها خالص. شغل ممتاز فعلاً!",
-    rating: 5,
-  },
-  {
-    name: "Layla H.",
-    text: "The earrings are so lightweight and comfortable. I wear them all day and forget they're even there. Stunning pieces!",
-    rating: 5,
-  },
+interface TestimonialItem {
+  id: string;
+  name: string;
+  text: string;
+  rating: number;
+}
+
+const fallbackTestimonials: TestimonialItem[] = [
+  { id: "t1", name: "Sara A.", text: "I couldn't believe these are stainless steel! They look exactly like real gold. Everyone asks me where I got my jewelry.", rating: 5 },
+  { id: "t2", name: "Nour M.", text: "The quality is exceptional. I've been wearing my Feminista bracelet daily for months and it still looks brand new.", rating: 5 },
+  { id: "t3", name: "Hana K.", text: "Finally, affordable luxury that doesn't compromise on elegance. Feminista changed my accessory game completely.", rating: 5 },
+  { id: "t4", name: "Mariam R.", text: "الإكسسوارات فخمة جداً والخامة ممتازة. أول مرة ألاقي حاجة بالجودة دي بسعر معقول!", rating: 5 },
+  { id: "t5", name: "Yasmin T.", text: "I ordered a necklace set for my sister's birthday and she absolutely loved it. The packaging was beautiful too!", rating: 5 },
+  { id: "t6", name: "Dina S.", text: "بقالي شهور بلبس الغويشة وما اتغيرش لونها خالص. شغل ممتاز فعلاً!", rating: 5 },
+  { id: "t7", name: "Layla H.", text: "The earrings are so lightweight and comfortable. I wear them all day and forget they're even there. Stunning pieces!", rating: 5 },
 ];
+
+const TESTIMONIALS_QUERY = `*[_type == "testimonial"] | order(order asc) {
+  _id, name, text, rating
+}`;
 
 const Testimonials = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [testimonials, setTestimonials] = useState<TestimonialItem[]>(fallbackTestimonials);
+
+  useEffect(() => {
+    sanityClient
+      .fetch(TESTIMONIALS_QUERY)
+      .then((data: any[]) => {
+        if (data.length > 0) {
+          setTestimonials(data.map((t) => ({ id: t._id, name: t.name, text: t.text, rating: t.rating })));
+        }
+      })
+      .catch(console.error);
+  }, []);
 
   const scroll = (direction: "left" | "right") => {
     if (!scrollRef.current) return;
@@ -86,9 +82,9 @@ const Testimonials = () => {
             ref={scrollRef}
             className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory"
           >
-            {testimonials.map((t, i) => (
+            {testimonials.map((t) => (
               <div
-                key={i}
+                key={t.id}
                 className="min-w-[250px] w-[72vw] sm:w-[75vw] md:w-[calc(33.333%-16px)] lg:w-[calc(25%-18px)] flex-shrink-0 snap-start bg-card rounded-2xl p-5 sm:p-7 flex flex-col text-center gold-glow-border transition-all duration-300 hover:scale-[1.02]"
                 style={{ boxShadow: "var(--shadow-card)" }}
               >
