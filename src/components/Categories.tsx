@@ -74,6 +74,9 @@ const Categories = ({
                     onCategorySelect("All");
                   } else {
                     onCategorySelect(cat.name);
+                    setTimeout(() => {
+                      document.getElementById("collection")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }, 100);
                   }
                 }}
                 className={`group relative overflow-hidden rounded-2xl cursor-pointer aspect-[3/4] transition-all duration-500 ${
